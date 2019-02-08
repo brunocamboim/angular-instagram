@@ -57,4 +57,11 @@ export class AcessoComponent implements OnInit {
     this.cadastro = !this.cadastro
   }
 
+  public inicioDaAnimacao(): void {
+
+  }
+
+  public fimDaAnimacao(): void {
+    
+  }
 }
