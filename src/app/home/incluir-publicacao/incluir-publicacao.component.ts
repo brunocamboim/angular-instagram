@@ -1,10 +1,10 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Bd } from '../../bd.service'
 import * as firebase from 'firebase'
 import { Progresso } from 'src/app/progreso.service';
-import { interval, Subject, Observable } from 'rxjs';
-import { map, tap, takeUntil} from 'rxjs/operators'; 
+import { interval, Subject } from 'rxjs';
+import { takeUntil} from 'rxjs/operators'; 
 import 'rxjs';
 
 @Component({
@@ -18,6 +18,8 @@ export class IncluirPublicacaoComponent implements OnInit {
   public formulario: FormGroup = new FormGroup({
     'titulo': new FormControl( null )
   })
+
+  @Output() public atualizarTimeLine: EventEmitter<any> = new EventEmitter<any>()
 
   public email: string
   private imagem: any
@@ -54,6 +56,9 @@ export class IncluirPublicacaoComponent implements OnInit {
       this.porcentagemUpload = Math.round( (this.progresso.estado.bytesTransferred / this.progresso.estado.totalBytes ) * 100)
 
       if(this.progresso.status === 'concluído'){
+        //emitir evento do componente parent(home)
+        this.atualizarTimeLine.emit()
+
         continua.next(false);
         this.progressoPublicacao = 'concluido'
       }
